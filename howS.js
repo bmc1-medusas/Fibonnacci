@@ -17,21 +17,24 @@
 // so the the function would look like this
 // "howSum(m, n)"" whic is the calculator of dimensions of the grid
 // where 'n' is the actual ways of how many options are to travel
-const howSum=(m , n,memo={})=>{
-        // are arguments in the memo?
-    const key =m+ ',' +n;
-    if (key in memo) return memo[key];
-    if(m === 1 && n===1) return 1;
-    if(m === 0 || n===0) return 0;
-    memo[key]=howSum(m-1,n,memo)+howSumer(m,n-1,memo);
-    return memo[key];
-    //return howSum(m-1,n)+howSum(m,n-1);
+const howSum=(targetSum,numbers)=>{
+    if(targetSum ===0) return[];
+    if(targetSum <0) return null;
+
+    for (let num of numbers){
+        const remainder = targetSum -num;
+        const remainderResult = howSum(remainder, numbers);
+        if(remainderResult !== null){
+            return [...remainderResult,num];
+        }
+    }
+    return null;
 };
-console.log(howSum(1,1)); // 1
-console.log(howSum(2,3)); // 3
-console.log(howSum(3,2)); // 3
-console.log(howSum(3,3)); // 6
-console.log(howSum(18,18)) // 2333606220
+console.log(howSum(7,[2,3]));     // 3,2,2
+console.log(howSum(7,[5,3,4,7])); // ..[4,3]
+console.log(howSum(7,[2,4]));     // null
+console.log(howSum(8,[2,3,5]));   // [2,-2,-2,-2]
+console.log(howSum(300,[7,14]))   // null
 //
 //
 // Recipe to the solution and optimization
